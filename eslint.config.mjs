@@ -1,22 +1,121 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
+import js from '@eslint/js';
+import react from 'eslint-plugin-react';
+import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default tseslint.config(
     { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+    { ignores: ['*.mjs'] },
     { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
-    pluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
-    pluginReact.configs.flat.recommended,
+    { languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } } },
+    js.configs.recommended,
+    stylistic.configs['recommended-flat'],
+    react.configs.flat.recommended,
+    tseslint.configs.strictTypeChecked,
+    tseslint.configs.stylistic,
     {
-        rules: {
-            indent: ['error', 4],
-            'react/react-in-jsx-scope': 'off',
-            quotes: ['error', 'single', 'avoid-escape'],
-            semi: 'error',
-            'jsx-quotes': ['error', 'prefer-single']
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+            },
         },
     },
-];
+    eslintPluginPrettierRecommended,
+    {
+        plugins: {
+            '@stylistic': stylistic,
+            react: react,
+        },
+        rules: {
+            'array-callback-return': 'error',
+            'no-await-in-loop': 'error',
+            'no-constructor-return': 'error',
+            'no-duplicate-imports': 'error',
+            'no-inner-declarations': 'error',
+            'no-promise-executor-return': 'error',
+            'no-self-compare': 'error',
+            'no-template-curly-in-string': 'error',
+            'no-use-before-define': 'error',
+            'no-useless-assignment': 'error',
+            'require-atomic-updates': 'error',
+            'accessor-pairs': 'error',
+            'block-scoped-var': 'error',
+            camelcase: 'error',
+            'consistent-return': 'error',
+            'dot-notation': 'error',
+            eqeqeq: 'error',
+            'func-style': ['error', 'expression'],
+            'guard-for-in': 'error',
+            'max-depth': ['error', 4],
+            'max-params': ['error', 5],
+            'max-statements': ['error', 20],
+            'new-cap': 'error',
+            'no-array-constructor': 'error',
+            'no-bitwise': 'error',
+            'no-caller': 'error',
+            'no-console': 'error',
+            'no-continue': 'error',
+            'no-div-regex': 'error',
+            'no-else-return': 'error',
+            'no-eq-null': 'error',
+            'no-eval': 'error',
+            'no-extend-native': 'error',
+            'no-extra-bind': 'error',
+            'no-extra-label': 'error',
+            'no-implied-eval': 'error',
+            'no-invalid-this': 'error',
+            'no-iterator': 'error',
+            'no-labels': 'error',
+            'no-lonely-if': 'error',
+            'no-magic-numbers': 'error',
+            'no-multi-assign': 'error',
+            'no-multi-str': 'error',
+            'no-nested-ternary': 'error',
+            'no-new-func': 'error',
+            'no-object-constructor': 'error',
+            'no-param-reassign': 'error',
+            'no-plusplus': 'error',
+            'no-proto': 'error',
+            'no-return-assign': 'error',
+            'no-script-url': 'error',
+            'no-sequences': 'error',
+            'no-shadow': 'error',
+            'no-undef-init': 'error',
+            'no-undefined': 'error',
+            'no-underscore-dangle': 'error',
+            'no-unneeded-ternary': 'error',
+            'no-unused-expressions': 'error',
+            'no-useless-call': 'error',
+            'no-useless-computed-key': 'error',
+            'no-useless-concat': 'error',
+            'no-useless-constructor': 'error',
+            'no-useless-rename': 'error',
+            'no-useless-return': 'error',
+            'no-var': 'error',
+            'no-void': 'error',
+            'one-var': ['error', 'never'],
+            'prefer-arrow-callback': 'error',
+            'prefer-const': 'error',
+            // stylistic
+            '@stylistic/quotes': ['error', 'single', 'avoid-escape'],
+            '@stylistic/indent': ['error', 4],
+            '@stylistic/semi': ['error', 'always'],
+            '@stylistic/jsx-quotes': ['error', 'prefer-single'],
+            '@stylistic/quote-props': 'off',
+            '@stylistic/jsx-curly-brace-presence': 'off',
+            // react
+            'react/react-in-jsx-scope': 'off',
+            'react/hook-use-state': 'error',
+            'react/jsx-no-literals': 'error',
+        },
+    },
+    // {
+    //     rules: {
+    //         'react/react-in-jsx-scope': 'off',
+    //         'jsx-quotes': ['error', 'prefer-single'],
+    //     },
+    // },
+);
