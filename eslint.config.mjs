@@ -7,7 +7,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default tseslint.config(
     { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
-    { ignores: ['*.mjs'] },
+    { ignores: ['*.mjs', '**/\\.next/*'] },
     { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
     { languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } } },
     js.configs.recommended,
@@ -28,6 +28,11 @@ export default tseslint.config(
         plugins: {
             '@stylistic': stylistic,
             react: react,
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
         },
         rules: {
             'array-callback-return': 'error',
@@ -70,7 +75,7 @@ export default tseslint.config(
             'no-iterator': 'error',
             'no-labels': 'error',
             'no-lonely-if': 'error',
-            'no-magic-numbers': 'error',
+            'no-magic-numbers': ['error', { ignore: [-1, 0, 1] }],
             'no-multi-assign': 'error',
             'no-multi-str': 'error',
             'no-nested-ternary': 'error',
@@ -104,18 +109,27 @@ export default tseslint.config(
             '@stylistic/indent': ['error', 4],
             '@stylistic/semi': ['error', 'always'],
             '@stylistic/jsx-quotes': ['error', 'prefer-single'],
+            '@stylistic/jsx-indent-props': ['error', 4],
             '@stylistic/quote-props': 'off',
             '@stylistic/jsx-curly-brace-presence': 'off',
+            '@stylistic/member-delimiter-style': 'off',
             // react
             'react/react-in-jsx-scope': 'off',
             'react/hook-use-state': 'error',
             'react/jsx-no-literals': 'error',
+            '@typescript-eslint/no-inferrable-types': 'off',
+            '@typescript-eslint/typedef': [
+                'error',
+                {
+                    arrowParameter: true,
+                    memberVariableDeclaration: true,
+                    objectDestructuring: true,
+                    parameter: true,
+                    propertyDeclaration: true,
+                    variableDeclaration: true,
+                    variableDeclarationIgnoreFunction: true,
+                },
+            ],
         },
     },
-    // {
-    //     rules: {
-    //         'react/react-in-jsx-scope': 'off',
-    //         'jsx-quotes': ['error', 'prefer-single'],
-    //     },
-    // },
 );
